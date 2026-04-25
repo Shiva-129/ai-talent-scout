@@ -4,6 +4,75 @@
 
 ---
 
+## Getting Started
+
+Don't worry — setting this up is simpler than it looks. You just need Node.js installed on your machine and a free Gemini API key. That's it. No databases, no cloud accounts, no complicated config.
+
+### Step 1 — Make sure you have Node.js
+
+Open your terminal and run:
+
+```bash
+node --version
+```
+
+If you see a version number like `v18.x` or higher, you're good. If not, download it from [nodejs.org](https://nodejs.org) — grab the LTS version.
+
+### Step 2 — Clone or download the project
+
+If you have Git installed:
+
+```bash
+git clone https://github.com/your-username/talent-scout.git
+cd talent-scout
+```
+
+Or just download the ZIP from GitHub, unzip it, and open the folder in your terminal.
+
+### Step 3 — Install dependencies
+
+This pulls in everything the project needs (Next.js, React, the Gemini SDK, etc.):
+
+```bash
+npm install
+```
+
+Grab a coffee — this takes about 30 seconds the first time.
+
+### Step 4 — Add your Gemini API key
+
+There's a file called `.env.local` in the root of the project. Open it and you'll see:
+
+```
+GEMINI_API_KEY="your-key-here"
+```
+
+Replace `your-key-here` with your actual key from [Google AI Studio](https://aistudio.google.com/app/apikey). It's free to get one — just sign in with your Google account.
+
+Your key should look something like this:
+
+```
+GEMINI_API_KEY="AIzaSy..."
+```
+
+> 🔒 This file is already in `.gitignore` — it will never be committed to git. Your key stays on your machine.
+
+### Step 5 — Start the app
+
+```bash
+npm run dev
+```
+
+Then open your browser and go to **[http://localhost:3000](http://localhost:3000)**.
+
+You should see the TalentAI landing page. Click "Start Scouting" and you're off.
+
+---
+
+> 💡 **That's genuinely all there is to it.** No environment variables beyond the API key, no database setup, no Docker, no deployment required. Everything runs locally on your machine.
+
+---
+
 ## What is this, really?
 
 TalentScout is a **full-stack AI recruiting pipeline** built with Next.js and powered by Google's Gemini 2.0 Flash model. It takes the most time-consuming parts of early-stage recruiting — parsing job descriptions, sifting through profiles, scoring fit, and gauging interest — and automates all of them end-to-end.
