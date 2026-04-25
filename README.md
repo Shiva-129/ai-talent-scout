@@ -341,4 +341,14 @@ COMBINED SCORE (shortlist stage)
 
 ---
 
+## Want to Connect a Real Database?
+
+Right now TalentScout runs entirely off a static list of candidates baked into the code — which is perfect for demos and testing, but the moment you want to manage hundreds of real candidates without touching code, you'll want a proper database behind it.
+
+We've written a step-by-step guide that walks you through the whole thing — from installing PostgreSQL and setting up Prisma, to seeding your database and wiring the candidates page to pull live data. No prior database experience needed, every step is explained in plain English.
+
+👉 **Read [`DATABASE.md`](./DATABASE.md) to get started.**
+
+---
+
 *Built with Next.js, Tailwind CSS, and Google Gemini 2.0 Flash.*
