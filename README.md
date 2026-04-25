@@ -43,17 +43,17 @@ GEMINI_API_KEY="AIzaSy..."
 TalentScout is built around a **linear 5-stage pipeline**. Each stage feeds into the next, and your progress is saved in `localStorage` so you can close the tab and come back without losing anything.
 
 ```
-┌─────────────────────────────────────────────────────────────────────┐
-│                        TALENTSCOUT PIPELINE                         │
-│                                                                     │
+┌────────────────────────────────────────────────────────────────────────────────┐
+│                        TALENTSCOUT PIPELINE                                    │
+│                                                                                │
 │   ┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐ │
 │   │          │    │          │    │          │    │          │    │          │ │
-│   │ 1. Paste │───▶│2. Browse │───▶│ 3. Score │───▶│  4. Chat │───▶│5. Export │ │
+│   │ 1. Paste │───▶│2. Browse │───▶│ 3. Score │───▶│  4. Chat │───▶│5. Export││
 │   │   the JD │    │ Matches  │    │ with AI  │    │ with AI  │    │Shortlist │ │
 │   │          │    │          │    │          │    │          │    │          │ │
 │   └──────────┘    └──────────┘    └──────────┘    └──────────┘    └──────────┘ │
-│                                                                     │
-└─────────────────────────────────────────────────────────────────────┘
+│                                                                                │
+└────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
@@ -125,11 +125,11 @@ For each selected candidate, TalentScout sends their full profile + the JD to Ge
 ┌────────────────────────────────────────────────────────┐
 │                  SCORING DIMENSIONS                    │
 │                                                        │
-│  Skills Match        ████████████████████  40% weight │
-│  Experience          █████████████         25% weight │
-│  Education           ████████              15% weight │
-│  Location            █████                 10% weight │
-│  Industry Alignment  █████                 10% weight │
+│  Skills Match        ████████████████████  40% weight  │
+│  Experience          █████████████         25% weight  │
+│  Education           ████████              15% weight  │
+│  Location            █████                 10% weight  │
+│  Industry Alignment  █████                 10% weight  │
 │                                                        │
 │  Each scored 0–100 by Gemini with a written rationale  │
 │  Weighted total becomes the candidate's Match Score    │
@@ -153,12 +153,12 @@ This is the most interesting stage. For each candidate, Gemini plays **two roles
 │                                                          │
 │  Gemini reads:                                           │
 │  ├── Candidate's availability status                     │
-│  │     "actively looking"  → enthusiastic, eager        │
-│  │     "open to opps"      → curious, measured          │
-│  │     "not looking"       → polite, sets high bar      │
-│  │     "happy where I am"  → brief, dismissive          │
+│  │     "actively looking"  → enthusiastic, eager         │
+│  │     "open to opps"      → curious, measured           │
+│  │     "not looking"       → polite, sets high bar       │
+│  │     "happy where I am"  → brief, dismissive           │
 │  │                                                       │
-│  ├── Their actual salary expectation vs JD range        │
+│  ├── Their actual salary expectation vs JD range         │
 │  ├── Their current company and role                      │
 │  └── Their location vs job location                      │
 │                                                          │
@@ -221,17 +221,17 @@ You can download the full shortlist as a CSV (Excel-compatible, with UTF-8 BOM) 
 ┌─────────────────────────────────────────────────────────────┐
 │                        BROWSER                              │
 │                                                             │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │              React / Next.js App Router              │  │
-│  │                                                      │  │
-│  │  PipelineContext (React Context)                     │  │
-│  │  ├── parsedJD          ──┐                           │  │
-│  │  ├── selectedCandidates  ├── synced to localStorage  │  │
-│  │  └── completedStages   ──┘                           │  │
-│  │                                                      │  │
-│  │  Pages:  /jd-input → /candidates → /scoring          │  │
-│  │          → /engagement → /shortlist                  │  │
-│  └──────────────────────────────────────────────────────┘  │
+│  ┌──────────────────────────────────────────────────────┐   │
+│  │              React / Next.js App Router              │   │
+│  │                                                      │   │
+│  │  PipelineContext (React Context)                     │   │
+│  │  ├── parsedJD          ──┐                           │   │
+│  │  ├── selectedCandidates  ├── synced to localStorage  │   │
+│  │  └── completedStages   ──┘                           │   │
+│  │                                                      │   │
+│  │  Pages:  /jd-input → /candidates → /scoring          │   │
+│  │          → /engagement → /shortlist                  │   │
+│  └──────────────────────────────────────────────────────┘   │
 │                          │  fetch()                         │
 └──────────────────────────┼──────────────────────────────────┘
                            │
