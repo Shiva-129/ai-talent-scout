@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { CandidateProfile, ConversationMessage, ParsedJD } from "@/lib/types";
 import { usePipeline } from "@/context/PipelineContext";
 import { useToast } from "@/components/Toast";
+import { MetalButton } from "@/components/ui/liquid-glass-button";
 import {
   MessageSquare,
   ArrowRight,
@@ -170,9 +171,9 @@ export default function EngagementPage() {
         <AlertCircle className="w-12 h-12 text-slate-300" />
         <h2 className="text-xl font-semibold text-slate-700">No Scoring Data Found</h2>
         <p className="text-slate-500">Complete the scoring step first.</p>
-        <button onClick={() => router.push("/scoring")} className="px-6 py-2.5 bg-[#1B6B7A] text-white rounded-lg font-medium hover:bg-teal-700 transition-all">
+        <MetalButton variant="primary" onClick={() => router.push("/scoring")}>
           Go to Scoring
-        </button>
+        </MetalButton>
       </div>
     );
   }
@@ -359,14 +360,14 @@ export default function EngagementPage() {
             <p className="text-sm text-slate-500">
               {engagements.size} candidate{engagements.size !== 1 ? "s" : ""} engaged successfully
             </p>
-            <button
+            <MetalButton
+              variant="primary"
               onClick={handleProceed}
               disabled={engagements.size === 0}
-              className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#1B6B7A] text-white rounded-lg font-semibold hover:bg-teal-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
             >
               Generate Shortlist
               <ArrowRight className="w-4 h-4" />
-            </button>
+            </MetalButton>
           </div>
         </div>
       )}

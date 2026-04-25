@@ -6,6 +6,7 @@ import { ParsedJD, SkillRequirement } from "@/lib/types";
 import { usePipeline } from "@/context/PipelineContext";
 import { useToast } from "@/components/Toast";
 import { FieldsSkeleton, OverlayLoader } from "@/components/Skeletons";
+import { MetalButton } from "@/components/ui/liquid-glass-button";
 import {
   FileText,
   Loader2,
@@ -141,10 +142,10 @@ We are looking for a Senior Backend Engineer with 5+ years of experience in Pyth
           <span className="text-xs text-slate-400">
             {jdText.length > 0 ? `${jdText.length} characters` : "Min 20 characters"}
           </span>
-          <button
+          <MetalButton
+            variant="primary"
             onClick={handleParse}
             disabled={loading || jdText.trim().length < 20}
-            className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#1B6B7A] text-white rounded-lg font-medium hover:bg-teal-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
           >
             {loading ? (
               <>
@@ -157,7 +158,7 @@ We are looking for a Senior Backend Engineer with 5+ years of experience in Pyth
                 Parse JD
               </>
             )}
-          </button>
+          </MetalButton>
         </div>
       </div>
 
@@ -166,8 +167,8 @@ We are looking for a Senior Backend Engineer with 5+ years of experience in Pyth
         <div className="flex items-start gap-3 p-4 bg-amber-50 border border-amber-200 rounded-xl text-amber-800">
           <AlertCircle className="w-5 h-5 mt-0.5 shrink-0" />
           <div>
-            <p className="text-sm font-semibold">Gemini API rate limit reached</p>
-            <p className="text-sm mt-0.5">Free tier quota exhausted. Retrying automatically in <strong>{retryAfter}s</strong>. If this persists, the daily quota may be reset at midnight Pacific time.</p>
+            <p className="text-sm font-semibold">Too many requests</p>
+            <p className="text-sm mt-0.5">The API is busy right now. Retrying in <strong>{retryAfter}s</strong>…</p>
           </div>
         </div>
       )}
@@ -259,13 +260,10 @@ We are looking for a Senior Backend Engineer with 5+ years of experience in Pyth
 
           {/* Proceed Button */}
           <div className="flex justify-end pt-4">
-            <button
-              onClick={handleProceed}
-              className="inline-flex items-center gap-2 px-8 py-3 bg-[#1B6B7A] text-white rounded-lg font-semibold hover:bg-teal-700 transition-all shadow-md hover:shadow-lg"
-            >
+            <MetalButton variant="primary" onClick={handleProceed}>
               Proceed to Discovery
               <ArrowRight className="w-5 h-5" />
-            </button>
+            </MetalButton>
           </div>
         </div>
       )}

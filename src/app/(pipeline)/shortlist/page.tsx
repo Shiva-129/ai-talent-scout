@@ -16,6 +16,7 @@ import {
   CheckCircle2,
   SlidersHorizontal,
 } from "lucide-react";
+import { MetalButton } from "@/components/ui/liquid-glass-button";
 
 interface ScoringResult {
   candidateId: string;
@@ -139,9 +140,9 @@ export default function ShortlistPage() {
         <AlertCircle className="w-12 h-12 text-slate-300" />
         <h2 className="text-xl font-semibold text-slate-700">No Engagement Data Found</h2>
         <p className="text-slate-500">Complete the engagement step first.</p>
-        <button onClick={() => router.push("/engagement")} className="px-6 py-2.5 bg-[#1B6B7A] text-white rounded-lg font-medium hover:bg-teal-700 transition-all">
+        <MetalButton variant="primary" onClick={() => router.push("/engagement")}>
           Go to Engagement
-        </button>
+        </MetalButton>
       </div>
     );
   }
@@ -157,13 +158,10 @@ export default function ShortlistPage() {
           </h1>
           <p className="text-slate-500">Ranked candidates ready for recruiter action</p>
         </div>
-        <button
-          onClick={handleNewSearch}
-          className="inline-flex items-center gap-2 px-4 py-2 text-sm border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-50 transition-all"
-        >
+        <MetalButton variant="default" onClick={handleNewSearch}>
           <RotateCcw className="w-4 h-4" />
           Start New Search
-        </button>
+        </MetalButton>
       </div>
 
       {/* Stats Banner */}
@@ -181,30 +179,21 @@ export default function ShortlistPage() {
           <h3 className="font-semibold text-sm text-slate-700">Scoring Weights</h3>
           <span className="text-xs text-slate-400 ml-auto">Adjust to re-rank in real time</span>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <label className="flex items-center justify-between text-sm mb-1">
-              <span className="text-slate-600">Match Score Weight</span>
-              <span className="font-bold text-[#1B6B7A]">{matchWeight}%</span>
-            </label>
-            <input
-              type="range"
-              min={0} max={100} value={matchWeight}
-              onChange={(e) => setMatchWeight(Number(e.target.value))}
-              className="w-full accent-[#1B6B7A]"
-            />
+        <div className="space-y-3">
+          <div className="flex items-center justify-between text-sm">
+            <span className="font-semibold text-[#1B6B7A]">Match {matchWeight}%</span>
+            <span className="text-xs text-slate-400">← drag to adjust →</span>
+            <span className="font-semibold text-amber-600">Interest {interestWeight}%</span>
           </div>
-          <div>
-            <label className="flex items-center justify-between text-sm mb-1">
-              <span className="text-slate-600">Interest Score Weight</span>
-              <span className="font-bold text-[#1B6B7A]">{interestWeight}%</span>
-            </label>
-            <input
-              type="range"
-              min={0} max={100} value={interestWeight}
-              onChange={(e) => setMatchWeight(100 - Number(e.target.value))}
-              className="w-full accent-[#1B6B7A]"
-            />
+          <input
+            type="range"
+            min={0} max={100} value={matchWeight}
+            onChange={(e) => setMatchWeight(Number(e.target.value))}
+            className="w-full accent-[#1B6B7A]"
+          />
+          <div className="flex rounded-full overflow-hidden h-2">
+            <div className="bg-[#1B6B7A] transition-all duration-200" style={{ width: `${matchWeight}%` }} />
+            <div className="bg-amber-400 transition-all duration-200" style={{ width: `${interestWeight}%` }} />
           </div>
         </div>
       </div>
@@ -289,20 +278,14 @@ export default function ShortlistPage() {
 
       {/* Actions */}
       <div className="flex items-center justify-between">
-        <button
-          onClick={handleNewSearch}
-          className="inline-flex items-center gap-2 px-5 py-2.5 text-sm border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-50 transition-all"
-        >
+        <MetalButton variant="default" onClick={handleNewSearch}>
           <RotateCcw className="w-4 h-4" />
           Start New Search
-        </button>
-        <button
-          onClick={downloadCsv}
-          className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#1B6B7A] text-white rounded-lg font-semibold hover:bg-teal-700 transition-all shadow-md hover:shadow-lg"
-        >
+        </MetalButton>
+        <MetalButton variant="success" onClick={downloadCsv}>
           <Download className="w-4 h-4" />
           Download CSV
-        </button>
+        </MetalButton>
       </div>
     </div>
   );

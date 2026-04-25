@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { CandidateProfile, ParsedJD } from "@/lib/types";
 import { usePipeline } from "@/context/PipelineContext";
 import { useToast } from "@/components/Toast";
+import { MetalButton } from "@/components/ui/liquid-glass-button";
 import {
   UserCheck,
   ArrowRight,
@@ -193,9 +194,9 @@ export default function ScoringPage() {
         <AlertCircle className="w-12 h-12 text-slate-300" />
         <h2 className="text-xl font-semibold text-slate-700">No Candidates Selected</h2>
         <p className="text-slate-500">Please select candidates from the discovery page first.</p>
-        <button onClick={() => router.push("/candidates")} className="px-6 py-2.5 bg-[#1B6B7A] text-white rounded-lg font-medium hover:bg-teal-700 transition-all">
+        <MetalButton variant="primary" onClick={() => router.push("/candidates")}>
           Go to Discovery
-        </button>
+        </MetalButton>
       </div>
     );
   }
@@ -403,14 +404,14 @@ export default function ScoringPage() {
           <p className="text-sm text-slate-500">
             {allScores.length} candidate{allScores.length !== 1 ? "s" : ""} scored successfully
           </p>
-          <button
+          <MetalButton
+            variant="primary"
             onClick={handleProceed}
             disabled={allScores.length === 0}
-            className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#1B6B7A] text-white rounded-lg font-semibold hover:bg-teal-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
           >
             Proceed to Engagement
             <ArrowRight className="w-4 h-4" />
-          </button>
+          </MetalButton>
         </div>
       )}
     </div>

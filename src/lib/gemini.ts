@@ -1,63 +1,76 @@
 import { GoogleGenAI } from "@google/genai";
 
-export interface GeminiResult {
-  text: string;
-}
-
 export class RateLimitError extends Error {
   retryAfterSeconds: number;
   constructor(retryAfterSeconds: number) {
-    super(`Gemini API rate limit exceeded. Please retry in ${retryAfterSeconds} seconds.`);
+    super(`Rate limit reached. Please wait ${retryAfterSeconds} seconds and try again.`);
     this.name = "RateLimitError";
     this.retryAfterSeconds = retryAfterSeconds;
   }
 }
 
-function extractRetryAfter(errorMessage: string): number {
-  const match = errorMessage.match(/retry[^\d]*(\d+(?:\.\d+)?)\s*s/i);
-  return match ? Math.ceil(parseFloat(match[1])) : 60;
+function extractRetryAfter(msg: string): number {
+  // Prefer the retryDelay field value from the Gemini error body
+  const secMatch = msg.match(/retryDelay["\s:]+(\d+(?:\.\d+)?)s/i)
+    ?? msg.match(/retry[^\d]*(\d+(?:\.\d+)?)\s*s/i);
+  return secMatch ? Math.ceil(parseFloat(secMatch[1])) : 30;
 }
 
-function isRateLimit(e: unknown): boolean {
+function is429(e: unknown): boolean {
   const msg = e instanceof Error ? e.message : String(e);
-  return msg.includes("429") || msg.includes("RESOURCE_EXHAUSTED") || msg.includes("quota");
+  // Only match genuine HTTP 429 / RESOURCE_EXHAUSTED — not generic "quota" mentions
+  return (
+    msg.includes("429") ||
+    msg.includes("RESOURCE_EXHAUSTED") ||
+    msg.includes("GenerateRequestsPerMinute") ||
+    msg.includes("GenerateRequestsPerDay")
+  );
 }
+
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 export async function callGemini(
   apiKey: string,
   contents: string,
-  maxRetries = 3
+  maxRetries = 4
 ): Promise<string> {
   const ai = new GoogleGenAI({ apiKey });
-
   let lastError: unknown = null;
 
   for (let attempt = 0; attempt < maxRetries; attempt++) {
     try {
       const response = await ai.models.generateContent({
-        model: "gemini-2.0-flash",
+        model: "gemini-2.5-flash",
         contents,
       });
 
-      const text = (response.text ?? "").trim()
+      return (response.text ?? "")
+        .trim()
         .replace(/^```json\s*/i, "")
         .replace(/^```\s*/i, "")
         .replace(/\s*```$/i, "")
         .trim();
 
-      return text;
     } catch (e) {
       lastError = e;
 
-      if (isRateLimit(e)) {
+      if (is429(e)) {
         const msg = e instanceof Error ? e.message : String(e);
-        const retryAfter = extractRetryAfter(msg);
-        throw new RateLimitError(retryAfter);
+        const waitSecs = extractRetryAfter(msg);
+
+        // Auto-wait and retry if we have attempts left
+        if (attempt < maxRetries - 1) {
+          await sleep(waitSecs * 1000);
+          continue;
+        }
+
+        // All retries exhausted — surface to caller
+        throw new RateLimitError(waitSecs);
       }
 
-      // For non-rate-limit errors, wait briefly before retrying
+      // Non-rate-limit error: short backoff then retry
       if (attempt < maxRetries - 1) {
-        await new Promise((r) => setTimeout(r, 500 * (attempt + 1)));
+        await sleep(600 * (attempt + 1));
       }
     }
   }
