@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { callGemini, RateLimitError } from "@/lib/gemini";
+import { callAI, getAIConfig, RateLimitError } from "@/lib/ai";
 
 export async function GET() {
   return NextResponse.json({ error: "Method not allowed. Use POST." }, { status: 405 });
@@ -28,10 +28,10 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const apiKey = process.env.GEMINI_API_KEY;
-    if (!apiKey || apiKey === "your-gemini-api-key-here") {
+    const config = getAIConfig();
+    if (!config) {
       return NextResponse.json(
-        { error: "Gemini API key is not configured. Set GEMINI_API_KEY in .env.local" },
+        { error: "OpenCode Zen API key is not configured. Set OPENCODE_API_KEY in .env.local" },
         { status: 500 }
       );
     }
@@ -41,9 +41,9 @@ export async function POST(req: NextRequest) {
 
     for (let attempt = 0; attempt < 3; attempt++) {
       try {
-        const text = await callGemini(
-          apiKey,
-          `${SYSTEM_PROMPT}\n\nJob Description:\n${jobDescription}`
+        const text = await callAI(
+          `${SYSTEM_PROMPT}\n\nJob Description:\n${jobDescription}`,
+          "parse-jd"
         );
         parsed = JSON.parse(text);
         break;

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { CandidateProfile, ConversationMessage } from "@/lib/types";
-import { callGemini, RateLimitError } from "@/lib/gemini";
+import { callAI, getAIConfig, RateLimitError } from "@/lib/ai";
 
 export async function GET() {
   return NextResponse.json({ error: "Method not allowed. Use POST." }, { status: 405 });
@@ -68,9 +68,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Missing candidateId or messages." }, { status: 400 });
     }
 
-    const apiKey = process.env.GEMINI_API_KEY;
-    if (!apiKey || apiKey === "your-gemini-api-key-here") {
-      return NextResponse.json({ error: "Gemini API key not configured." }, { status: 500 });
+    const config = getAIConfig();
+    if (!config) {
+      return NextResponse.json({ error: "OpenCode Zen API key is not configured. Set OPENCODE_API_KEY in .env.local" }, { status: 500 });
     }
 
     const transcript = formatTranscript(messages);
@@ -85,7 +85,7 @@ export async function POST(req: NextRequest) {
 
     for (let attempt = 0; attempt < 3; attempt++) {
       try {
-        const text = await callGemini(apiKey, userPrompt);
+        const text = await callAI(userPrompt, "score-interest");
         const parsed = JSON.parse(text);
 
         if (!validateResult(parsed)) {

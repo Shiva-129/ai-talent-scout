@@ -2,14 +2,15 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Brain, Briefcase } from "lucide-react";
+import { Brain, Briefcase, Play } from "lucide-react";
 import { LiquidLink } from "@/components/ui/liquid-glass-button";
 
 interface NavbarProps {
   pipeline?: boolean;
+  onOpenDemo?: () => void;
 }
 
-export default function Navbar({ pipeline = false }: NavbarProps) {
+export default function Navbar({ pipeline = false, onOpenDemo }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -22,7 +23,7 @@ export default function Navbar({ pipeline = false }: NavbarProps) {
   if (pipeline) {
     return (
       <header className="bg-[#0B1220] text-white shadow-lg sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 group">
             <div className="relative w-7 h-7">
               <Brain className="w-7 h-7 absolute" style={{ color: "#67C090" }} />
@@ -32,6 +33,14 @@ export default function Navbar({ pipeline = false }: NavbarProps) {
               TalentAI
             </span>
           </Link>
+          {onOpenDemo && (
+            <button
+              onClick={onOpenDemo}
+              className="inline-flex items-center gap-1.5 text-xs text-slate-300 hover:text-white px-3 py-1.5 rounded-lg border border-white/10 hover:border-[#67C090]/40 transition-colors"
+            >
+              <Play className="w-3 h-3 text-[#AAFFC7]" /> Watch Demo
+            </button>
+          )}
         </div>
       </header>
     );
@@ -59,7 +68,7 @@ export default function Navbar({ pipeline = false }: NavbarProps) {
 
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-6">
-          {["Features", "How It Works", "Pricing"].map((item) => (
+          {["Features", "How It Works"].map((item) => (
             <a
               key={item}
               href={`#${item.toLowerCase().replace(/\s+/g, "-")}`}
@@ -68,9 +77,14 @@ export default function Navbar({ pipeline = false }: NavbarProps) {
               {item}
             </a>
           ))}
-          <a href="#" className="text-sm text-slate-400 hover:text-white transition-colors">
-            Login
-          </a>
+          {onOpenDemo && (
+            <button
+              onClick={onOpenDemo}
+              className="text-sm text-[#AAFFC7] hover:text-white flex items-center gap-1.5 transition-colors cursor-pointer"
+            >
+              <Play className="w-3.5 h-3.5" /> Demo Video
+            </button>
+          )}
           <LiquidLink
             href="/jd-input"
             size="sm"
@@ -82,14 +96,24 @@ export default function Navbar({ pipeline = false }: NavbarProps) {
         </nav>
 
         {/* Mobile CTA */}
-        <LiquidLink
-          href="/jd-input"
-          size="sm"
-          className="md:hidden text-white font-semibold text-xs"
-          style={{ background: "linear-gradient(90deg, #215B63, #67C090)" } as React.CSSProperties}
-        >
-          Get Started
-        </LiquidLink>
+        <div className="flex items-center gap-2 md:hidden">
+          {onOpenDemo && (
+            <button
+              onClick={onOpenDemo}
+              className="inline-flex items-center gap-1 text-xs text-[#AAFFC7] px-2.5 py-1.5 rounded-lg border border-[#67C090]/30"
+            >
+              <Play className="w-3 h-3" /> Demo
+            </button>
+          )}
+          <LiquidLink
+            href="/jd-input"
+            size="sm"
+            className="text-white font-semibold text-xs"
+            style={{ background: "linear-gradient(90deg, #215B63, #67C090)" } as React.CSSProperties}
+          >
+            Get Started
+          </LiquidLink>
+        </div>
       </div>
     </header>
   );

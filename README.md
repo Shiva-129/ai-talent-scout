@@ -39,21 +39,15 @@ npm install
 
 Grab a coffee — this takes about 30 seconds the first time.
 
-### Step 4 — Add your Gemini API key
+### Step 4 — Add your OpenCode Zen API key
 
 There's a file called `.env.local` in the root of the project. Open it and you'll see:
 
 ```
-GEMINI_API_KEY="your-key-here"
+OPENCODE_API_KEY="your-key-here"
 ```
 
-Replace `your-key-here` with your actual key from [Google AI Studio](https://aistudio.google.com/app/apikey). It's free to get one — just sign in with your Google account.
-
-Your key should look something like this:
-
-```
-GEMINI_API_KEY="AIzaSy..."
-```
+Replace `your-key-here` with your actual OpenCode Zen API key.
 
 > 🔒 This file is already in `.gitignore` — it will never be committed to git. Your key stays on your machine.
 

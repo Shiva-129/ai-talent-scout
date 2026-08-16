@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import {
   FileSearch,
@@ -19,6 +19,8 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { LiquidButton, LiquidLink } from "@/components/ui/liquid-glass-button";
+import Navbar from "@/components/Navbar";
+import DemoModal from "@/components/DemoModal";
 
 // ─── Palette tokens ──────────────────────────────────────────────────────────
 // #AAFFC7 — mint (highlights, gradient text end)
@@ -182,8 +184,13 @@ const STATS = [
 
 // ─── Main page ───────────────────────────────────────────────────────────────
 export default function Home() {
+  const [isDemoOpen, setIsDemoOpen] = useState(false);
+
   return (
     <div className="min-h-screen text-white overflow-x-hidden" style={{ background: "linear-gradient(135deg, #080f1a 0%, #0d1f2d 100%)" }}>
+
+      {/* ── Navigation ── */}
+      <Navbar onOpenDemo={() => setIsDemoOpen(true)} />
 
       {/* ── Aurora background ── */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden" aria-hidden>
@@ -250,8 +257,13 @@ export default function Home() {
                     Start Scouting <ArrowRight className="w-4 h-4" />
                   </LiquidLink>
                 </div>
-                <LiquidButton size="lg" className="text-white font-semibold" style={{ border: "1px solid rgba(255,255,255,0.2)" } as React.CSSProperties}>
-                  <Play className="w-4 h-4" /> Watch Demo
+                <LiquidButton
+                  onClick={() => setIsDemoOpen(true)}
+                  size="lg"
+                  className="text-white font-semibold cursor-pointer"
+                  style={{ border: "1px solid rgba(255,255,255,0.2)" } as React.CSSProperties}
+                >
+                  <Play className="w-4 h-4 text-[#AAFFC7]" /> Watch Demo
                 </LiquidButton>
               </div>
             </motion.div>
@@ -384,14 +396,21 @@ export default function Home() {
               </LiquidLink>
             </div>
             <p className="mt-5 text-sm" style={{ color: "#64748B" }}>
-              Already have an account?{" "}
-              <a href="#" className="hover:text-white underline underline-offset-2 transition-colors" style={{ color: "#94A3B8" }}>
-                Schedule a Demo
-              </a>
+              Want to see it in action first?{" "}
+              <button
+                onClick={() => setIsDemoOpen(true)}
+                className="hover:text-white underline underline-offset-2 transition-colors cursor-pointer"
+                style={{ color: "#AAFFC7" }}
+              >
+                Watch Video Walkthrough
+              </button>
             </p>
           </FadeUp>
         </div>
       </section>
+
+      {/* ── Demo Video Modal ── */}
+      <DemoModal isOpen={isDemoOpen} onClose={() => setIsDemoOpen(false)} />
 
       {/* ══════════════════════════════════════════════════════
           FOOTER
